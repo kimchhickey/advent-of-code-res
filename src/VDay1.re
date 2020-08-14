@@ -38,7 +38,7 @@ let match = (l1, l2) => {
 }
 
 // Read the data and transform to int list
-let data = List.head(readInputLines("Day1")); // r
+let data = List.head(readInputLines("Day1"));
 let origin = stringToList(data) // "3294191..." -> list{3, 2, 9...}
 
 // Part 1
