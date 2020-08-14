@@ -37,19 +37,18 @@ let match = (l1, l2) => {
   d(l1, l2, list{})
 }
 
+// Read the data and transform to int list
 let data = List.head(readInputLines("Day1")); // r
 let origin = stringToList(data) // "3294191..." -> list{3, 2, 9...}
 
-// part 1
+// Part 1
 let part1 = shift(origin, 1)
-
 match(origin, part1)
 ->List.reduce(0, ((a, b) => a + b))
 ->Js.log
   
-// part 2
+// Part 2
 let part2 = shift(origin, List.length(origin) / 2)
-
 match(origin, part2)
 ->List.reduce(0, ((a, b) => a + b))
 ->Js.log
