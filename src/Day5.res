@@ -44,11 +44,11 @@ let mem0 = () => {
   ->MemoryMap.fromArray(_)
 }
 
-let state0 = {
+let program0 = Init({
   ip: 0,
   step: 0,
   mem: mem0(),
-}
+})
 
 // run program
-run(Init(state0))->Js.log
+run(program0)->Js.log
