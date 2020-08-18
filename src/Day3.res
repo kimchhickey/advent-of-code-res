@@ -48,25 +48,25 @@ module SquareSystem = {
     f(pos, l)
   }
 
-  let next = ((l, f)) => {
+  let next = f => l => {
     let pos' = nextPos(l);
     let value' = nextValue(f, pos', l)
-    (l->Belt.List.add({coord: pos', value: value'}), f)
+    l->Belt.List.add({coord: pos', value: value'})
   }
 
   // Find 
-  let rec find = ((spiralMemory, f), target) => {
-    let list{head, ...tail} = spiralMemory
+  let rec find = ((seq, next), target) => {
+    let list{head, ...tail} = seq
 
     if (head.value >= target) {
       head
     } else {
-      find(next((spiralMemory, f)), target)
+      find((next(seq), next), target)
     }
   }
 
   let makeSpiralMemory = (d1, d2, f) => {
-    (list{d2, d1}, f)
+    (list{d2, d1}, next(f))
   }
 
   // Value Calculations
@@ -85,19 +85,18 @@ module SquareSystem = {
   }
 }
 
-module Main = {
-  open SquareSystem
-  // part 1
-  makeSpiralMemory(
-    {coord: {x: 0, y: 0}, value: 1},
-    {coord: {x: 1, y: 0}, value: 2},
-    incLastValue)
-  ->find(325489)->Js.log
+open SquareSystem
+// part 1
 
-  // part 2
-  makeSpiralMemory(
-    {coord: {x: 0, y: 0}, value: 1},
-    {coord: {x: 1, y: 0}, value: 1},
-    sumAround)
-  ->find(325489)->Js.log
-}
+makeSpiralMemory(
+  {coord: {x: 0, y: 0}, value: 1},
+  {coord: {x: 1, y: 0}, value: 2},
+  incLastValue)
+->find(325489)->Js.log
+
+// part 2
+makeSpiralMemory(
+  {coord: {x: 0, y: 0}, value: 1},
+  {coord: {x: 1, y: 0}, value: 1},
+  sumAround)
+->find(325489)->Js.log
