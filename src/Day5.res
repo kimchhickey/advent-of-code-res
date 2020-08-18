@@ -36,9 +36,9 @@ let rec run = program => {
 }
 
 let mem0 = () => {
-  let input = readInputLines("Day5")->Belt.List.map(int_of_string); // list{0, 0, 0, 2...}
-  let indexes = Belt.List.makeBy(Belt.List.size(input), i => i) // list{0, 1, 2, 3, 4}
-  MemoryMap.fromArray(Belt.List.toArray(Belt.List.zip(indexes, input)))
+  let input = readInputLines("Day5")->Belt.List.map(int_of_string);     // -> list{0, 0, 0, 2...}
+  let indexes = Belt.List.makeBy(Belt.List.size(input), i => i)         // -> list{0, 1, 2, 3, 4}
+  MemoryMap.fromArray(Belt.List.toArray(Belt.List.zip(indexes, input))) // -> Belt.Map.Int.fromArray([(0, 0), (1, 0), ...],
 }
 
 let state0 = {
