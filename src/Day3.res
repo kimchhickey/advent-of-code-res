@@ -40,7 +40,8 @@ let sumAround = (pos, l) => {
     getDistance(pos, v.coord) < 1.5
   }
   Belt.List.keep(l, isNeighbor)
-  ->Belt.List.reduce(0, (acc, itm) => acc + itm.value)
+  ->Belt.List.map(v=> v.value)
+  ->Belt.List.reduce(0, (acc, itm) => acc + itm)
 }
 
 let next = l => {
