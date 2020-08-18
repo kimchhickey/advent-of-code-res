@@ -87,7 +87,6 @@ module SquareSystem = {
 
 open SquareSystem
 // part 1
-
 makeSpiralMemory(
   {coord: {x: 0, y: 0}, value: 1},
   {coord: {x: 1, y: 0}, value: 2},
