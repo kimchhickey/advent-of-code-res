@@ -4,7 +4,7 @@ type coord = {
 }
 
 type data = {
-  coord: coord
+  coord: coord,
   value: int
 }
 
@@ -30,16 +30,20 @@ let hasData = (pos': coord, l) => {
   }
 }
 
+let getDistance = (c1, c2) => {
+  let dx = float_of_int(c2.x - c1.x)
+  let dy = float_of_int(c2.y - c1.y)
+  sqrt(dx ** 2.0 +. dy ** 2.0)
+}
+
 let valueOfpart1 = v => v + 1
 
 let valueOfpart2 = (pos, l) => {
   let isNeighbor = v => {
-    (pos.x == (v.coord.x + 1)
-      || pos.x == (v.coord.x - 1)
-      || pos.y == (v.coord.y + 1)
-      || pos.y == (v.coord.y - 1))
+    getDistance(pos, v.coord) < 1.5  
   }
   let x = Belt.List.keep(l, isNeighbor)
+  x->Js.log
   x->Belt.List.reduce(0, (acc, item) => acc + item.value)
 }
 
@@ -62,16 +66,15 @@ let next = ((d2: data, d1: data, l: list<data>)) => {
       goStraight(d2.coord, direction)
     }
 
-  let value' = valueOfpart1(d2.value);
+  let value' = valueOfpart2(pos', l)
   let data' = {coord: pos', value: value'}
 
   (data', d2, l->Belt.List.add(data'))
 }
 
-// let target = 325489
-let target = 1024
+let target = 325489
 let d1 = {coord: {x: 0, y: 0}, value: 1}
-let d2 = {coord: {x: 1, y: 0}, value: 2}
+let d2 = {coord: {x: 1, y: 0}, value: 1}
 let square = list{d2, d1}
 
 let rec find = ((d2, d1, square)) => {
@@ -84,8 +87,4 @@ let rec find = ((d2, d1, square)) => {
   }
 }
 
-// find((d2, d1, square))->Js.log
-
-//next(next(next((d2, d1, square))))->Js.log
-
-next(next((d2, d1, square)))->Js.log
+find((d2, d1, square))->Js.log
