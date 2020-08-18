@@ -29,29 +29,29 @@ module SquareSystem = {
     value: int
   }
 
-  let exist = (pos: coord, l) => {
-    l->Belt.List.some((value) => pos.x == value.coord.x && pos.y == value.coord.y)
-  }
+  let makeSpiralMemory = (d1, d2, f) => {
+    let exist = (pos: coord, l) => l->Belt.List.some((value) => pos.x == value.coord.x && pos.y == value.coord.y)
 
-  let nextPos = l => {
-    let list{d2, d1, ...tail} = l
-    let dir = findDirection(d2.coord, d1.coord)
+    let nextPos = l => {
+      let list{d2, d1, ...tail} = l
+      let dir = findDirection(d2.coord, d1.coord)
 
-    if !exist(turnLeft(d2.coord, dir), l) {
-      turnLeft(d2.coord, dir)
-    } else {
-      goStraight(d2.coord, dir)
+      if !exist(turnLeft(d2.coord, dir), l) {
+        turnLeft(d2.coord, dir)
+      } else {
+        goStraight(d2.coord, dir)
+      }
     }
-  }
 
-  let nextValue = (f, pos, l) => {
-    f(pos, l)
-  }
+    let nextValue = (f, pos, l) => f(pos, l)
 
-  let nextSeq = f => l => {
-    let pos' = nextPos(l);
-    let value' = nextValue(f, pos', l)
-    l->Belt.List.add({coord: pos', value: value'})
+    let next = f => l => {
+      let pos' = nextPos(l);
+      let value' = nextValue(f, pos', l)
+      l->Belt.List.add({coord: pos', value: value'})
+    }
+
+    (list{d2, d1}, next(f))
   }
 
   // Find 
@@ -64,11 +64,6 @@ module SquareSystem = {
       find((next(seq), next), target)
     }
   }
-
-  let makeSpiralMemory = (d1, d2, f) => {
-    (list{d2, d1}, nextSeq(f))
-  }
-
 }
 
 open Coord
