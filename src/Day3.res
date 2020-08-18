@@ -1,90 +1,89 @@
+/*
+* Coordinate
+*/
+
 type coord = {
   x: int,
   y: int
 }
 
-type data = {
-  coord: coord,
-  value: int
-}
-
-let findDirection = (d2: data, d1: data) => {
-  let direction = {
-    x: d2.coord.x - d1.coord.x,
-    y: d2.coord.y - d1.coord.y
-  }
-  direction
-}
-
+// Direction Operations
+let findDirection = (c2: coord, c1: coord) => {x: c2.x - c1.x, y: c2.y - c1.y}
 let leftDirection = ({x, y}: coord) => {x: -y, y: x}
 
-let hasData = (pos': coord, l) => {
-  let pred = value => {
-    pos'.x == value.coord.x && pos'.y == value.coord.y
-  }
+// Moving Operations
+let move = (pos: coord, direction: coord) => {x: pos.x + direction.x, y: pos.y + direction.y}
+let goStraight = move;
+let turnLeft = (pos: coord, direction: coord) => move(pos, leftDirection(direction))
 
-  if l->Belt.List.some(pred) {
-    true
-  } else {
-    false
-  }
-}
-
+// Distance
 let getDistance = (c1, c2) => {
   let dx = float_of_int(c2.x - c1.x)
   let dy = float_of_int(c2.y - c1.y)
   sqrt(dx ** 2.0 +. dy ** 2.0)
 }
 
-let valueOfpart1 = v => v + 1
+/*
+ *  Square System
+ */ 
+type data = {
+  coord: coord,
+  value: int
+}
 
-let valueOfpart2 = (pos, l) => {
+let exist = (pos: coord, l) => {
+  l->Belt.List.some((value) => pos.x == value.coord.x && pos.y == value.coord.y)
+}
+
+let sumAround = (pos, l) => {
   let isNeighbor = v => {
-    getDistance(pos, v.coord) < 1.5  
+    getDistance(pos, v.coord) < 1.5
   }
-  let x = Belt.List.keep(l, isNeighbor)
-  x->Js.log
-  x->Belt.List.reduce(0, (acc, item) => acc + item.value)
+  Belt.List.keep(l, isNeighbor)
+  ->Belt.List.reduce(0, (acc, itm) => acc + itm.value)
 }
 
-let go = (pos, direction) => {
-  {x: pos.x + direction.x,
-   y: pos.y + direction.y}
-}
+let next = l => {
+  let list{d2, d1, ...tail} = l
+  let dir = findDirection(d2.coord, d1.coord)
 
-let goStraight = go;
-let turnLeft = (pos, direction) => {
-  go(pos, leftDirection(direction))
-}
-
-let next = ((d2: data, d1: data, l: list<data>)) => {
-  let direction = findDirection(d2, d1)
   let pos' = 
-    if !hasData(turnLeft(d2.coord, direction), l) {
-      turnLeft(d2.coord, direction)
+    if !exist(turnLeft(d2.coord, dir), l) {
+      turnLeft(d2.coord, dir)
     } else {
-      goStraight(d2.coord, direction)
+      goStraight(d2.coord, dir)
     }
 
-  let value' = valueOfpart2(pos', l)
+  // let value' = succ(d2.value) // part 1
+  let value' = sumAround(pos', l) // part 2
   let data' = {coord: pos', value: value'}
 
-  (data', d2, l->Belt.List.add(data'))
+  l->Belt.List.add(data')
 }
 
-let target = 325489
-let d1 = {coord: {x: 0, y: 0}, value: 1}
-let d2 = {coord: {x: 1, y: 0}, value: 1}
-let square = list{d2, d1}
+// main
+let rec find = (l, target) => {
+  let list{head, ...tail} = l
 
-let rec find = ((d2, d1, square)) => {
-  if (d2.value >= target) {
-    Js.log(d2.value)
-    (d2, d1, square)
+  if (head.value >= target) {
+    head
   } else {
-    Js.log(d2.value)
-    find(next((d2, d1, square)))
+    find((next(l)), target)
   }
 }
 
-find((d2, d1, square))->Js.log
+let makeSpiralMemory = (d1, d2) => {
+  list{d2, d1}
+}
+
+// part 1
+makeSpiralMemory(
+  {coord: {x: 0, y: 0}, value: 1},
+  {coord: {x: 1, y: 0}, value: 2})
+->find(325489)->Js.log
+
+// part 2
+makeSpiralMemory(
+  {coord: {x: 0, y: 0}, value: 1},
+  {coord: {x: 1, y: 0}, value: 1})
+->find(325489)->Js.log
