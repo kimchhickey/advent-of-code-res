@@ -39,13 +39,11 @@ let nextPos = l => {
   let list{d2, d1, ...tail} = l
   let dir = findDirection(d2.coord, d1.coord)
 
-  let pos' = 
-    if !exist(turnLeft(d2.coord, dir), l) {
-      turnLeft(d2.coord, dir)
-    } else {
-      goStraight(d2.coord, dir)
-    }
-  pos'
+  if !exist(turnLeft(d2.coord, dir), l) {
+    turnLeft(d2.coord, dir)
+  } else {
+    goStraight(d2.coord, dir)
+  }
 }
 
 let nextValue = (f, pos, l) => {
