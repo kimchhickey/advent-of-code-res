@@ -1,17 +1,17 @@
 module Coord = {
-  type coord = {
+  type t = {
     x: int,
     y: int
   }
 
   // Direction Operations
-  let findDirection = (c2: coord, c1: coord) => {x: c2.x - c1.x, y: c2.y - c1.y}
-  let leftDirection = ({x, y}: coord) => {x: -y, y: x}
+  let findDirection = (c2, c1) => {x: c2.x - c1.x, y: c2.y - c1.y}
+  let leftDirection = ({x, y}) => {x: -y, y: x}
 
   // Moving Operations
-  let move = (pos: coord, direction: coord) => {x: pos.x + direction.x, y: pos.y + direction.y}
+  let move = (pos, direction) => {x: pos.x + direction.x, y: pos.y + direction.y}
   let goStraight = move;
-  let turnLeft = (pos: coord, direction: coord) => move(pos, leftDirection(direction))
+  let turnLeft = (pos, direction) => move(pos, leftDirection(direction))
 
   // Distance
   let getDistance = (c1, c2) => {
@@ -25,12 +25,12 @@ module SquareSystem = {
   open Coord
 
   type data = {
-    coord: coord,
+    coord: Coord.t,
     value: int
   }
 
   let makeSpiralMemory = (d1, d2, f) => {
-    let exist = (pos: coord, l) => l->Belt.List.some((value) => pos.x == value.coord.x && pos.y == value.coord.y)
+    let exist = (pos, l) => l->Belt.List.some((value) => pos.x == value.coord.x && pos.y == value.coord.y)
 
     let nextPos = l => {
       let list{d2, d1, ...tail} = l
