@@ -2,7 +2,12 @@ open Util;
 
 let input = readInputLines("Day2");
 let parse = l => {
-  l->Belt.List.map(Js.String.split("\t"));
-};
+  let sheet = [];
+  l->Belt.List.forEach(row => {
+    let arr_row =
+      row |> Js.String.split("\t") |> Js.Array.map(v => int_of_string(v));
 
-parse(input)->Js.log;
+    Js.Array.push(arr_row, sheet);
+  });
+  sheet;
+};
