@@ -46,7 +46,7 @@ let mem0 = () => {
 
 let state0 = {
   ip: 0,
-  step: 0
+  step: 0,
   mem: mem0(),
 }
 
