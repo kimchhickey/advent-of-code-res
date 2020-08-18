@@ -48,7 +48,7 @@ module SquareSystem = {
     f(pos, l)
   }
 
-  let next = f => l => {
+  let nextSeq = f => l => {
     let pos' = nextPos(l);
     let value' = nextValue(f, pos', l)
     l->Belt.List.add({coord: pos', value: value'})
@@ -66,27 +66,20 @@ module SquareSystem = {
   }
 
   let makeSpiralMemory = (d1, d2, f) => {
-    (list{d2, d1}, next(f))
+    (list{d2, d1}, nextSeq(f))
   }
 
-  // Value Calculations
-  let sumAround = (pos, l) => {
-    let isNeighbor = v => {
-      getDistance(pos, v.coord) < 1.5
-    }
-    Belt.List.keep(l, isNeighbor)
-    ->Belt.List.map(v=> v.value)
-    ->Belt.List.reduce(0, (acc, itm) => acc + itm)
-  }
-
-  let incLastValue = (pos, l) => {
-    let list{head, ...tail} = l
-    head.value + 1
-  }
 }
 
+open Coord
 open SquareSystem
+
 // part 1
+let incLastValue = (pos, l) => {
+  let list{head, ...tail} = l
+  head.value + 1
+}
+
 makeSpiralMemory(
   {coord: {x: 0, y: 0}, value: 1},
   {coord: {x: 1, y: 0}, value: 2},
@@ -94,6 +87,15 @@ makeSpiralMemory(
 ->find(325489)->Js.log
 
 // part 2
+let sumAround = (pos, l) => {
+  let isNeighbor = v => {
+    getDistance(pos, v.coord) < 1.5
+  }
+  Belt.List.keep(l, isNeighbor)
+  ->Belt.List.map(v=> v.value)
+  ->Belt.List.reduce(0, (acc, itm) => acc + itm)
+}
+
 makeSpiralMemory(
   {coord: {x: 0, y: 0}, value: 1},
   {coord: {x: 1, y: 0}, value: 1},
