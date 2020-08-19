@@ -60,21 +60,7 @@ let history = cycle(history0)
 let target = Belt.List.headExn(history)
 let history = Belt.List.tailExn(history)
 
-let areEqualArrays = a => b => {
-  if (Js.Array.length(a) === Js.Array.length(b)) {
-    let areEqual = ref(true)
-    for i in Js.Array.length(a) downto 0 {
-      if (Js.Array.unsafe_get(a, i) !== (Js.Array.unsafe_get(b, i))) {
-        areEqual := false
-      }
-    }
-    areEqual.contents
-  } else {
-    false
-  }
-}
-
-history->Belt.List.toArray->Js.Array.findIndex(areEqualArrays(target), _)->Js.log
+history->Belt.List.toArray->Js.Array.findIndex(a => a == target, _)->Js.log
 
 /*
 
@@ -82,5 +68,4 @@ history->Belt.List.toArray->Js.Array.findIndex(areEqualArrays(target), _)->Js.lo
   - ref의 사용 법
   - mutable array의 사용법
   - index 기반으로 array 처리하기
-
 */
