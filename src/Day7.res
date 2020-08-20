@@ -17,7 +17,9 @@ let tree = readInputLines("Day7")->Belt.List.reduce(ProgramMap.make(~hintSize=20
     Belt.Array.length(str_arr) <= 4
       ? Belt.HashSet.String.make(~hintSize=0)
       : Belt.HashSet.String.fromArray(
-          Belt.Array.map(str_arr, a => Belt.Option.getWithDefault(a, "")),
+          Belt.Array.map(
+            Belt.Array.sliceToEnd(str_arr, 5),
+            a => Belt.Option.getWithDefault(a, "")),
         )
 
   ProgramMap.set(m, key, {weight: weight, total: total, holdings: holdings})
@@ -25,8 +27,7 @@ let tree = readInputLines("Day7")->Belt.List.reduce(ProgramMap.make(~hintSize=20
 })
 
 let total = (tree, key) => {
-  let v = ProgramMap.get(tree, key)
-  v->Js.log
+  ProgramMap.get(tree, key)
 }
 
-total(tree, "bpvhwhh")
+Belt.Option.getExn(total(tree, "bpvhwhh")).holdings->Js.log
