@@ -111,3 +111,24 @@ Belt.Array.reduce(
   (p, c) => Belt.Option.mapWithDefault(c, p, move(p)))
 ->join
 ->Js.log
+
+let prodUnitTo:'a => ('a, unit) = x => (x, ())
+
+
+
+
+
+
+
+type either<'a, 'b> =
+  | Left('a)
+  | Right('b)
+
+let left = a => Left(a)
+let right = a => Right(a)
+
+type s<'b, 'c, 'a> = either<'b, 'c> => 'a
+type t<'b, 'c, 'a> = ('b => 'a, 'c => 'a)
+
+let from_:s<'b, 'c, 'a> => t<'b, 'c, 'a>
+  = f => (x => f(left(x)), y => f(right(y)))
